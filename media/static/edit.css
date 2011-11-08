@@ -1,0 +1,101 @@
+/* CSS for the edit page*/
+
+body {
+    background-color: #DFDFFF;
+}
+
+.title {
+    text-align: center;
+    width: 80%;
+    font: 2em bold;
+    background-color: #FFDDDD;
+    padding: 1em;
+    border: solid #FFAAAA;
+    margin-left: 5%;
+    margin-right: 5%
+}
+
+.content {
+    width: 100%;
+    margin-top: 20px;
+    border: solid 1px #BBBBBB;
+    overflow-y: auto;
+}
+
+.tweet_text{
+    width: 140ex;
+    background: white;
+    margin: 0px;
+    padding: 3px 0px 3px 2px;
+    border-left: solid 1px #BBBBBB;
+}
+
+div.tweet {
+    text-align: left;
+    
+    font-size: 10pt;
+    font-family: monospace;
+}
+
+div.published {
+    background: #EEEEEE;
+}
+
+div.unpublished {
+    background: pink;
+}
+
+/*div.unpublished .tweet_text:hover {*/
+.tweet_text:hover {
+    border: solid 1px #DDBBBB;
+    padding: 1px 3px 1px 3px;
+    cursor: pointer;
+}
+
+#newcontent {
+    margin-top: 15px;
+    height: 8em;
+    width: 100%;
+    background-image: url("/static/gray.gif");
+    background-repeat: repeat-y;
+    background-position: 140ex;
+    
+    font-size: 10pt;
+    font-family: monospace;
+
+    border: 1px;
+}
+
+.inlineeditbox {
+    width: 100%;
+    
+    padding-right: 5px;
+    background-image: url("/static/gray.gif");
+    background-repeat: repeat-y;
+    background-position: 140ex;
+    
+    font-size: 10pt;
+    font-family: monospace;
+}
+
+.publishedEditBox {
+    color: black;
+    background-color: #FFFFDD;
+    height: 10em;
+    max-height: 20%;
+    /*border-bottom: hidden;*/
+    border-bottom: #DDDDDD solid 1px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.unpublishedEditBox {
+    height: 60%;
+    background-image: url("/static/gray.gif");
+    background-repeat: repeat-y;
+    background-position: 140ex;
+
+    border-top: hidden;
+    padding-top: 0px;
+    margin-top: 0px;
+}

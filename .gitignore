@@ -1,0 +1,8 @@
+*.egg-info
+*.pyc
+*.pyo
+*.swp
+db.slite3
+media/static/*.jpg
+media/favicon.ico
+settings.py

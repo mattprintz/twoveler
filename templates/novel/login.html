@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Eternal Autumn</title>
+    </head>
+    <body>
+        <div style="text-align: center; width: 80%; font: 2em bold; background-color: #FFDDDD; padding: 1em; border: solid #FFAAAA; margin-left: 5%; margin-right: 5%">
+            Eternal Autumn
+        </div>
+        
+        <form method="post" action="">
+            {% csrf_token %}
+            Username: <input name="username"/><br/>
+            Password: <input name="password"/><br/>
+            <input type="submit"/>
+        </form>
+        
+    </body>
+</html>
