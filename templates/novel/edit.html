@@ -9,40 +9,42 @@
             {{ title }}
         </div>
         <div class="content">
+            {% for tweet in tweets %}
+                {% if tweet.published %}
+                <div
+                     id="tweet{{ tweet.id }}"
+                     
+                     class="tweet published"
+                >
+                    <span>{{ tweet.text }}<span>
+                    
+                </div>
+                {% else %}
+                <div
+                     id="tweet{{ tweet.id }}"
+                     originaltext="{{ tweet.text }}"
+                     class="tweet unpublished"
+                     onclick="editTweet(this)"
+                >
+                    <div class="tweet_text">{{ tweet.text }}</div>
+                    <!--<div class="button_container">-->
+                        <!--<a href="/delete">D</a>-->
+                        <!--<a href="/insert">I</a>-->
+                    <!--</div>-->
+                </div>
+                {% endif %}
+            {% endfor %}
+            
             <form action="/edit/submit/" method="post">
                 {% csrf_token %}
                 
-                {% for tweet in tweets %}
-                    {% if tweet.published %}
-                    <div
-                         id="tweet{{ tweet.id }}"
-                         
-                         class="tweet published"
-                    >
-                        <span>{{ tweet.text }}<span>
-                        
-                    </div>
-                    {% else %}
-                    <div
-                         id="tweet{{ tweet.id }}"
-                         originaltext="{{ tweet.text }}"
-                         class="tweet unpublished"
-                         onclick="editTweet(this)"
-                    >
-                        <div class="tweet_text">{{ tweet.text }}</div>
-                        <!--<div class="button_container">-->
-                            <!--<a href="/delete">D</a>-->
-                            <!--<a href="/insert">I</a>-->
-                        <!--</div>-->
-                    </div>
-                    {% endif %}
-                {% endfor %}
                 <textarea id="newcontent" name="newcontent"></textarea>
                 <input type="submit" value="Save"/>
             </form>
-            <!--<div id="inlineeditbox" hidden="true">-->
-            <!--    -->
-            <!--</div>-->
+            
+            <div id="inlineeditbox" hidden="true">
+                <input id="inlineeditinput" name="newValue"/>
+            </div>
         </div>
     </body>
 </html>

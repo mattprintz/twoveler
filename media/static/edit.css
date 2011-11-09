@@ -66,7 +66,7 @@ div.unpublished {
     border: 1px;
 }
 
-.inlineeditbox {
+#inlineeditinput {
     width: 100%;
     
     padding-right: 5px;
@@ -76,6 +76,10 @@ div.unpublished {
     
     font-size: 10pt;
     font-family: monospace;
+}
+
+form {
+    margin-bottom: 0px;
 }
 
 .publishedEditBox {

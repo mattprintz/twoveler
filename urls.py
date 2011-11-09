@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^$', 'novel.views.home', name='home'),
     url(r'^edit/$', 'novel.views.edit'),
     url(r'^edit/submit/$', 'novel.views.editsubmit'),
+    url(r'^edit/inline/$', 'novel.views.editinline'),
     url(r'^(?P<path>favicon.ico)$', 'django.views.static.serve', {
             'document_root': settings.STATIC_ROOT,
     }),

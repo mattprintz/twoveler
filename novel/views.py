@@ -31,10 +31,13 @@ def editinline(request):
         text = request.POST['newcontent']
         id = request.POST['id']
     except KeyError:
-        return HttpResponse("fail")
+        return HttpResponse("false")
     else:
         pass
-    return HttpResponse('test')
+    tweet = Tweet.objects.get(id=id)
+    tweet.text = text
+    tweet.save()
+    return HttpResponse("true")
 
 @login_required(login_url="/admin/")
 def editsubmit(request):
