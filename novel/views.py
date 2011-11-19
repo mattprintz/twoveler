@@ -8,10 +8,11 @@ from novel import settings
 def home(request):
     lines = Tweet.objects.filter(published=True)
     t = loader.get_template('home.html')
-    c = Context({
-        'lines': lines,
-        'title': settings.TITLE,
-    })
+    c = RequestContext(request,
+        {
+            'lines': lines,
+            'title': settings.TITLE,
+        })
     return HttpResponse(t.render(c))
 
 @login_required(login_url="/admin/")

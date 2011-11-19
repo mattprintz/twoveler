@@ -56,7 +56,7 @@ div.unpublished {
     margin-top: 15px;
     height: 8em;
     width: 100%;
-    background-image: url("/static/gray.gif");
+    background-image: url("../img/gray.gif");
     background-repeat: repeat-y;
     background-position: 140ex;
     
@@ -70,7 +70,7 @@ div.unpublished {
     width: 100%;
     
     padding-right: 5px;
-    background-image: url("/static/gray.gif");
+    background-image: url("../img/gray.gif");
     background-repeat: repeat-y;
     background-position: 140ex;
     
@@ -95,7 +95,7 @@ form {
 
 .unpublishedEditBox {
     height: 60%;
-    background-image: url("/static/gray.gif");
+    background-image: url("../img/gray.gif");
     background-repeat: repeat-y;
     background-position: 140ex;
 

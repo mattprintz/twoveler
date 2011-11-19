@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^edit/submit/$', 'novel.views.editsubmit'),
     url(r'^edit/inline/$', 'novel.views.editinline'),
     url(r'^(?P<path>favicon.ico)$', 'django.views.static.serve', {
-            'document_root': settings.STATIC_ROOT,
+            'document_root': settings.MEDIA_ROOT,
     }),
 
     # Uncomment the admin/doc line below to enable admin documentation:
