@@ -1,5 +1,7 @@
 from django.db import models
 
+PAGEHEIGHT = 20
+
 def defaultSortTweet():
     try:
         return int(Tweet.objects.order_by('sort').reverse()[0].sort) + 1
@@ -30,15 +32,28 @@ class TweetManager(models.Manager):
         finally:
             tweet.save()
     
-    #def resort(self):
-    #    from django.db import connection
-    #    cursor = connection.cursor()
-    #    cursor.execute("""
-    #        CREATE TEMP TABLE tempsort AS
-    #        SELECT id, text, published, scheduled_time, published_time
-    #        FROM novel_tweet
-    #        ORDER BY sort
-    #        """)
+    def published(self):
+        return Tweet.objects.filter(published=True)
+    
+    def unpublished(self):
+        return Tweet.objects.filter(unpublished=True)
+    
+    def lastpage(self):
+        return (Tweet.objects.published().count() / PAGEHEIGHT) + 1
+    
+    def page(self, page_num):
+        if int(page_num) <= 0:
+            page_num = 1
+        start = (int(page_num) - 1) * PAGEHEIGHT
+        return Tweet.objects.published()[start:start+PAGEHEIGHT]
+    
+    def resort(self):
+        count = 1
+        tweets = Tweet.objects.all()
+        for tweet in tweets:
+            tweet.sort = count
+            count += 1
+            tweet.save()
 
 class Tweet(models.Model):
     

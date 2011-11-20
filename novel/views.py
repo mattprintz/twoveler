@@ -6,11 +6,18 @@ from novel.models import Tweet
 from novel import settings
 
 def home(request):
-    lines = Tweet.objects.filter(published=True)
+    try:
+        page = int(request.GET['page'])
+    except (KeyError, ValueError):
+        page = Tweet.objects.lastpage()
+    if page <= 0:
+        return HttpResponseRedirect('/?page=1')
     t = loader.get_template('home.html')
     c = RequestContext(request,
         {
-            'lines': lines,
+            'page': page,
+            'lastpage': Tweet.objects.lastpage(),
+            'lines': Tweet.objects.page(page),
             'title': settings.TITLE,
         })
     return HttpResponse(t.render(c))

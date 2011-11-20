@@ -14,7 +14,11 @@
 		{% if lines %}
 			<ul>
 			{% for line in lines %}
-				<li>{{ line.text }}</li>
+				{% if forloop.last and page == lastpage %}
+					<li><b>{{ line.text }}</b></li>
+				{% else %}
+					<li>{{ line.text }}</li>
+				{% endif %}
 			{% endfor %}
 			</ul>
 		{% else %}
@@ -23,5 +27,21 @@
 			</h1>
 		{% endif %}
 		</div>
+		<div style="background: rgba(255,255,255,0.6); color: black; padding: 15px; margin-left: 10%; margin-right: 10%; text-align: center">
+			{% if page > 1 %}
+				<a href="/?page=1">First</a>
+				<a href="/?page={{page|add:-1}}">Prev</a>
+			{% else %}
+				First
+				Prev
+			{% endif %}
+			Page {{ page }}
+			{% if page != lastpage %}
+				<a href="/?page={{page|add:1}}">Next</a>
+				<a href="/?page={{lastpage}}">Last</a>
+			{% else %}
+				Next
+				Last
+			{% endif %}
 	</body>
 </html>
