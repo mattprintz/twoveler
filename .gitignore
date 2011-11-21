@@ -3,6 +3,5 @@
 *.pyo
 *.swp
 db.slite3
-media/static/*.jpg
-media/favicon.ico
+media
 settings.py
