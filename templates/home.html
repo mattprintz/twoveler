@@ -1,24 +1,26 @@
 <html>
 	<head>
 		<title>{{ title }} - A Twitter Novel</title>
+        <link href="{{ STATIC_URL }}novel/css/home.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{{ STATIC_URL }}novel/js/home.js"></script>
 	</head>
-	<body background="{{ MEDIA_URL }}background.jpg">
-		<div style="height: 5%">&nbsp;</div>
-		<div style="background: rgba(255,255,255,0.5); color: black; padding: 15px; margin-left: 10%; margin-right: 10%;">
-			<h1 align="center">
+	<body background="{{ MEDIA_URL }}background.jpg" onload="onLoad({% if page == lastpage%}true{%else%}false{%endif%})">
+		<div class="title">
+			<h1>
 				{{ title }}
 			</h1>
 		</div>
-		<div style="height: 5%">&nbsp;</div>
-		<div style="background: rgba(255,255,255,0.7); color: black; padding: 15px; margin-left: 10%; margin-right: 10%;">
+		<div class="content">
 		{% if lines %}
 			<ul>
 			{% for line in lines %}
+				<li id="tweet{{line.id}}">
 				{% if forloop.last and page == lastpage %}
-					<li><b>{{ line.text }}</b></li>
+					<b>{{ line.text }}</b>
 				{% else %}
-					<li>{{ line.text }}</li>
+					{{ line.text }}
 				{% endif %}
+				</li>
 			{% endfor %}
 			</ul>
 		{% else %}
@@ -27,21 +29,21 @@
 			</h1>
 		{% endif %}
 		</div>
-		<div style="background: rgba(255,255,255,0.6); color: black; padding: 15px; margin-left: 10%; margin-right: 10%; text-align: center">
+		<div class="footer">
 			{% if page > 1 %}
-				<a href="/?page=1">First</a>
-				<a href="/?page={{page|add:-1}}">Prev</a>
+				<a href="/?page=1"><img src="{{ STATIC_URL }}novel/img/first.png"/></a>
+				<a href="/?page={{page|add:-1}}"><img src="{{ STATIC_URL }}novel/img/prev.png"/></a>
 			{% else %}
-				First
-				Prev
+				<img src="{{ STATIC_URL }}novel/img/first-disabled.png"/>
+				<img src="{{ STATIC_URL }}novel/img/prev-disabled.png"/>
 			{% endif %}
 			Page {{ page }}
 			{% if page != lastpage %}
-				<a href="/?page={{page|add:1}}">Next</a>
-				<a href="/?page={{lastpage}}">Last</a>
+				<a href="/?page={{page|add:1}}"><img src="{{ STATIC_URL }}novel/img/next.png"/></a>
+				<a href="/?page={{lastpage}}"><img src="{{ STATIC_URL }}novel/img/last.png"/></a>
 			{% else %}
-				Next
-				Last
+				<img src="{{ STATIC_URL }}novel/img/next-disabled.png"/>
+				<img src="{{ STATIC_URL }}novel/img/last-disabled.png"/>
 			{% endif %}
 	</body>
 </html>
