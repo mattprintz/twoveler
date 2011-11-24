@@ -29,3 +29,9 @@ body {
     margin-right: 10%;
     text-align: center;
 }
+
+#navtable {
+    margin-right: auto;
+    margin-left: auto;
+    vertical-align: middle;
+}

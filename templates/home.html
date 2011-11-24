@@ -30,20 +30,38 @@
 		{% endif %}
 		</div>
 		<div class="footer">
+			<table id="navtable">
+				<tr>
+					<td>
 			{% if page > 1 %}
 				<a href="/?page=1"><img src="{{ STATIC_URL }}novel/img/first.png"/></a>
+					</td>
+					<td>
 				<a href="/?page={{page|add:-1}}"><img src="{{ STATIC_URL }}novel/img/prev.png"/></a>
 			{% else %}
 				<img src="{{ STATIC_URL }}novel/img/first-disabled.png"/>
+					</td>
+					<td>
 				<img src="{{ STATIC_URL }}novel/img/prev-disabled.png"/>
 			{% endif %}
+					</td>
+					<td>
 			Page {{ page }}
+					</td>
+					<td>
 			{% if page != lastpage %}
 				<a href="/?page={{page|add:1}}"><img src="{{ STATIC_URL }}novel/img/next.png"/></a>
+					</td>
+					<td>
 				<a href="/?page={{lastpage}}"><img src="{{ STATIC_URL }}novel/img/last.png"/></a>
 			{% else %}
 				<img src="{{ STATIC_URL }}novel/img/next-disabled.png"/>
+					</td>
+					<td>
 				<img src="{{ STATIC_URL }}novel/img/last-disabled.png"/>
 			{% endif %}
+					</td>
+				</tr>
+			</table>
 	</body>
 </html>
