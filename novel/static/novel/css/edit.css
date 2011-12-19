@@ -2,6 +2,9 @@
 
 body {
     background-color: #DFDFFF;
+    
+    font-size: 10pt;
+    font-family: Courier, "Lucida Console", monospace;
 }
 
 .title {
@@ -15,11 +18,19 @@ body {
     margin-right: 5%
 }
 
+#tweets {
+    height: 60%;
+    overflow-y: auto;
+}
+
+#editor {
+    
+}
+
 .content {
     width: 100%;
     margin-top: 20px;
     border: solid 1px #BBBBBB;
-    overflow-y: auto;
 }
 
 .tweet_text{
@@ -33,8 +44,8 @@ body {
 div.tweet {
     text-align: left;
     
-    font-size: 10pt;
-    font-family: monospace;
+    /*font-size: 10pt;*/
+    /*font-family: monospace;*/
 }
 
 div.published {
@@ -45,7 +56,10 @@ div.unpublished {
     background: pink;
 }
 
-/*div.unpublished .tweet_text:hover {*/
+div.published > span {
+    margin-left: 3px;
+}
+
 .tweet_text:hover {
     border: solid 1px #DDBBBB;
     padding: 1px 3px 1px 3px;
@@ -60,8 +74,8 @@ div.unpublished {
     background-repeat: repeat-y;
     background-position: 140ex;
     
-    font-size: 10pt;
-    font-family: monospace;
+    /*font-size: 10pt;*/
+    /*font-family: monospace;*/
 
     border: 1px;
 }
@@ -74,8 +88,8 @@ div.unpublished {
     background-repeat: repeat-y;
     background-position: 140ex;
     
-    font-size: 10pt;
-    font-family: monospace;
+    /*font-size: 10pt;*/
+    /*font-family: monospace;*/
 }
 
 form {

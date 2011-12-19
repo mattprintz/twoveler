@@ -22,7 +22,7 @@ def home(request):
         })
     return HttpResponse(t.render(c))
 
-@login_required(login_url="/admin/")
+@login_required(login_url="/login/")
 def edit(request):
     tweets = Tweet.objects.all()
     t = loader.get_template('novel/edit.html')
@@ -33,7 +33,7 @@ def edit(request):
         })
     return HttpResponse(t.render(c))
 
-@login_required()
+@login_required(login_url="/login/")
 def editinline(request):
     try:
         text = request.POST['newcontent']
@@ -47,7 +47,7 @@ def editinline(request):
     tweet.save()
     return HttpResponse("true")
 
-@login_required(login_url="/admin/")
+@login_required(login_url="/login/")
 def editsubmit(request):
     try:
         text = request.POST['newcontent']

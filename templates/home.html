@@ -1,16 +1,6 @@
-<html>
-	<head>
-		<title>{{ title }} - A Twitter Novel</title>
-        <link href="{{ STATIC_URL }}novel/css/home.css" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="{{ STATIC_URL }}novel/js/home.js"></script>
-	</head>
-	<body background="{{ MEDIA_URL }}background.jpg" onload="onLoad({% if page == lastpage%}true{%else%}false{%endif%})">
-		<div class="title">
-			<h1>
-				{{ title }}
-			</h1>
-		</div>
-		<div class="content">
+{% extends "base.html" %}
+
+{% block content %}
 		{% if lines %}
 			<ul>
 			{% for line in lines %}
@@ -28,8 +18,10 @@
 				Coming soon...
 			</h1>
 		{% endif %}
-		</div>
-		<div class="footer">
+	
+{% endblock %}
+
+{% block footer %}
 			<table id="navtable">
 				<tr>
 					<td>
@@ -63,5 +55,5 @@
 					</td>
 				</tr>
 			</table>
-	</body>
-</html>
+{% endblock %}	
+

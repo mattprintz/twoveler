@@ -1,5 +1,12 @@
 // Javascript for edit page
 
+function onLoad(event) {
+   var tweetDiv = document.getElementById("tweets");
+   
+   tweetDiv.scrollTop = tweetDiv.scrollHeight;
+   
+}
+
 function submitInlineEdit(event) {
     var inputBox = document.getElementById("inlineeditbox"),
         input = document.getElementById("inlineeditinput");

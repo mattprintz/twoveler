@@ -4,11 +4,11 @@
         <link href="{{ STATIC_URL }}novel/css/edit.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{{ STATIC_URL }}novel/js/edit.js"></script>
     </head>
-    <body>
+    <body onload="onLoad(event)">
         <div class="title">
             {{ title }}
         </div>
-        <div class="content">
+        <div id="tweets" class="content">
             {% for tweet in tweets %}
                 {% if tweet.published %}
                 <div
@@ -34,6 +34,8 @@
                 </div>
                 {% endif %}
             {% endfor %}
+        </div>
+        <div id="editor" class="content">
             
             <form action="/edit/submit/" method="post">
                 {% csrf_token %}
