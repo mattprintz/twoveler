@@ -16,7 +16,7 @@
                      
                      class="tweet published"
                 >
-                    <span>{{ tweet.text }}<span>
+                    <span class="publishedtext">{{ tweet.text }}<span>
                     
                 </div>
                 {% else %}
@@ -25,12 +25,10 @@
                      originaltext="{{ tweet.text }}"
                      class="tweet unpublished"
                      onclick="editTweet(this)"
+                     onmouseover="hoverPopup(event, this)"
+                     onmouseout="cleanPopup(event, this)"
                 >
                     <div class="tweet_text">{{ tweet.text }}</div>
-                    <!--<div class="button_container">-->
-                        <!--<a href="/delete">D</a>-->
-                        <!--<a href="/insert">I</a>-->
-                    <!--</div>-->
                 </div>
                 {% endif %}
             {% endfor %}
@@ -48,5 +46,12 @@
                 <input id="inlineeditinput" name="newValue"/>
             </div>
         </div>
+        
+        <div id="tweetpopup" onclick="event.stopPropagation()">
+            <a href="#" onclick="deleteTweet(event, this)" title="Delete Tweet">D</a>
+            <a href="#" onclick="insertTweet(event, this)" title="Insert new tweet below">I</a>
+            <a href="#" onclick="publishTweet(event, this)" title="Publish Tweet now">P</a>
+        </div>
+        
     </body>
 </html>

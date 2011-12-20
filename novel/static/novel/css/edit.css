@@ -3,8 +3,9 @@
 body {
     background-color: #DFDFFF;
     
-    font-size: 10pt;
-    font-family: Courier, "Lucida Console", monospace;
+    /*font-size: 10pt;*/
+    /*font-family: Courier, "Lucida Console", monospace;*/
+    font: 10pt/1.2 Courier, monospace;
 }
 
 .title {
@@ -39,6 +40,7 @@ body {
     margin: 0px;
     padding: 3px 0px 3px 2px;
     border-left: solid 1px #BBBBBB;
+    display: inline-block;
 }
 
 div.tweet {
@@ -56,16 +58,21 @@ div.unpublished {
     background: pink;
 }
 
-div.published > span {
+div.unpublished:hover {
+    border: solid 1px #DDBBBB;
+    /*padding: 1px 3px 1px 3px;*/
+}
+
+span.publishedtext {
     margin-left: 3px;
 }
 
-.tweet_text:hover {
+/*.tweet_text:hover {
     border: solid 1px #DDBBBB;
     padding: 1px 3px 1px 3px;
     cursor: pointer;
 }
-
+*/
 #newcontent {
     margin-top: 15px;
     height: 8em;
@@ -73,9 +80,6 @@ div.published > span {
     background-image: url("../img/gray.gif");
     background-repeat: repeat-y;
     background-position: 140ex;
-    
-    /*font-size: 10pt;*/
-    /*font-family: monospace;*/
 
     border: 1px;
 }
@@ -87,9 +91,6 @@ div.published > span {
     background-image: url("../img/gray.gif");
     background-repeat: repeat-y;
     background-position: 140ex;
-    
-    /*font-size: 10pt;*/
-    /*font-family: monospace;*/
 }
 
 form {
@@ -101,7 +102,6 @@ form {
     background-color: #FFFFDD;
     height: 10em;
     max-height: 20%;
-    /*border-bottom: hidden;*/
     border-bottom: #DDDDDD solid 1px;
     padding-bottom: 0px;
     margin-bottom: 0px;
@@ -116,4 +116,16 @@ form {
     border-top: hidden;
     padding-top: 0px;
     margin-top: 0px;
+}
+
+#tweetpopup {
+    display: none;
+    position: absolute;
+    border: 1px solid #BBBBBB;
+    background: #DDDDDD;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: auto;
+    padding-bottom: auto;
+    height: inherit;
 }

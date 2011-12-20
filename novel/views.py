@@ -10,13 +10,16 @@ def home(request):
         page = int(request.GET['page'])
     except (KeyError, ValueError):
         page = Tweet.objects.lastpage()
-    if page <= 0:
+    if page < 0:
         return HttpResponseRedirect('/?page=1')
+    lastPage = Tweet.objects.lastpage()
+    if page > lastPage:
+        return HttpResponseRedirect('/')
     t = loader.get_template('home.html')
     c = RequestContext(request,
         {
             'page': page,
-            'lastpage': Tweet.objects.lastpage(),
+            'lastpage': lastPage,
             'lines': Tweet.objects.page(page),
             'title': settings.TITLE,
         })
@@ -46,6 +49,53 @@ def editinline(request):
     tweet.text = text
     tweet.save()
     return HttpResponse("true")
+
+@login_required(login_url="/login/")
+def editdelete(request):
+    try:
+        text = request.POST['textvalue']
+        id = request.POST['id']
+    except KeyError:
+        return HttpResponse("false")
+    else:
+        pass
+    tweet = Tweet.objects.get(id=id)
+    if(tweet.text != text):
+        return HttpResponse("false")
+    tweet.delete()
+    return HttpResponse("true")
+
+@login_required(login_url="/login/")
+def editinsert(request):
+    try:
+        id = request.POST['id']
+    except KeyError:
+        return HttpResponse("false")
+    else:
+        pass
+    reftweet = Tweet.objects.get(id=id)
+    
+    newtweet = Tweet(text='new tweet', sort=(reftweet.sort + 1))
+    
+    Tweet.objects.insert(newtweet)
+    return HttpResponse("true")
+
+@login_required(login_url="/login/")
+def editpublish(request):
+    try:
+        text = request.POST['textvalue']
+        id = request.POST['id']
+    except KeyError:
+        return HttpResponse("false")
+    else:
+        pass
+    tweet = Tweet.objects.get(id=id)
+    if(tweet.text != text):
+        return HttpResponse("false")
+    result = tweet.publish()
+    return HttpResponse(str(result).lower())
+    
+
 
 @login_required(login_url="/login/")
 def editsubmit(request):

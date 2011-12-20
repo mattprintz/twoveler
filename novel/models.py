@@ -1,4 +1,6 @@
 from django.db import models
+import twitter
+from novel import settings
 
 PAGEHEIGHT = 20
 
@@ -39,7 +41,11 @@ class TweetManager(models.Manager):
         return Tweet.objects.filter(unpublished=True)
     
     def lastpage(self):
-        return (Tweet.objects.published().count() / PAGEHEIGHT) + 1
+        count = Tweet.objects.published().count()
+        if count % PAGEHEIGHT == 0:
+            return ( count / PAGEHEIGHT)
+        else:
+            return ( count / PAGEHEIGHT) + 1
     
     def page(self, page_num):
         if int(page_num) <= 0:
@@ -68,6 +74,7 @@ class Tweet(models.Model):
     sort = models.PositiveIntegerField('Sort', unique=True, default=defaultSortTweet, db_index=True)
     scheduled_time = models.DateTimeField('DateTime scheduled', null=True, blank=True)
     published_time = models.DateTimeField('DateTime published', null=True, blank=True)
+    twitter_id = models.BigIntegerField('Twitter ID', null=True, blank=True)
     
     objects = TweetManager()
     
@@ -75,7 +82,22 @@ class Tweet(models.Model):
         return self.text
     
     def publish(self):
-        import datetime
-        self.published = True
-        self.published_time = datetime.datetime.now()
-        self.save()
+        from datetime import datetime
+        
+        api = twitter.Api(
+            settings.TWITTER_CONSUMER_KEY,
+            settings.TWITTER_CONSUMER_SECRET,
+            settings.TWITTER_ACCESS_TOKEN_KEY,
+            settings.TWITTER_ACCESS_TOKEN_SECRET
+        )
+        
+        api.VerifyCredentials()
+        result = api.PostUpdate(self.text)
+        
+        if result.GetCreatedAt():
+            self.published = True
+            self.published_time = datetime.fromtimestamp(result.GetCreatedAtInSeconds())
+            self.twitter_id = result.GetId()
+            self.save()
+            return True
+        return False
