@@ -1,7 +1,7 @@
 
 TITLE = 'Your Novel Title'
 
-TWITTER_NAME='@yourname'
+TWITTER_NAME='yourname' # Without the preceeding @
 
 TWITTER_CONSUMER_KEY=''
 TWITTER_CONSUMER_SECRET=''
