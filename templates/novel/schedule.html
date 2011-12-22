@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>{{ title }}</title>
+        <link href="{{ STATIC_URL }}novel/css/edit.css" rel="stylesheet" type="text/css" />
+        <!--<script type="text/javascript" src="{{ STATIC_URL }}novel/js/edit.js"></script>-->
+    </head>
+    <body onload="onLoad(event)">
+        <div class="title">
+            {{ title }}
+        </div>
+        <div class="content">
+            <input type="radio">Manual
+            <table border="1" style="width: 100%">
+                <tbody>
+                    <tr class="table_title" style="font-weight: bold; font-size:110%;">
+                        <td>
+                            Tweet Text
+                        </td>
+                        <td>
+                            Sched. Time (Click to change)
+                        </td>
+                    </tr>
+                    {% for tweet in tweets %}
+                        <tr>
+                            <td>{{ tweet.text }}</td>
+                            <td>
+                                <a href="#">
+                            {% if tweet.scheduled_time %}
+                                {{ tweet.scheduled_time|date:"N d, Y @ g:i A" }}
+                            {% else %}
+                                None
+                            {% endif %}
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </body>
+</html>

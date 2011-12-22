@@ -94,8 +94,6 @@ def editpublish(request):
         return HttpResponse("false")
     result = tweet.publish()
     return HttpResponse(str(result).lower())
-    
-
 
 @login_required(login_url="/login/")
 def editsubmit(request):
@@ -111,3 +109,14 @@ def editsubmit(request):
             t = Tweet(None, line.rstrip())
             t.save()
         return HttpResponseRedirect('/edit/')
+
+@login_required(login_url="/login/")
+def schedule(request):
+    tweets = Tweet.objects.unpublished()
+    t = loader.get_template('novel/schedule.html')
+    c = RequestContext(request,
+        {
+            'tweets': tweets,
+            'title': settings.TITLE,
+        })
+    return HttpResponse(t.render(c))

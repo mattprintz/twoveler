@@ -38,7 +38,7 @@ class TweetManager(models.Manager):
         return Tweet.objects.filter(published=True)
     
     def unpublished(self):
-        return Tweet.objects.filter(unpublished=True)
+        return Tweet.objects.filter(published=False)
     
     def lastpage(self):
         count = Tweet.objects.published().count()
