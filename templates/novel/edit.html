@@ -2,9 +2,10 @@
     <head>
         <title>{{ title }}</title>
         <link href="{{ STATIC_URL }}novel/css/edit.css" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}novel/js/edit.js"></script>
     </head>
-    <body onload="onLoad(event)">
+    <body>
         <div class="title">
             {{ title }}
         </div>
@@ -24,9 +25,6 @@
                      id="tweet{{ tweet.id }}"
                      originaltext="{{ tweet.text }}"
                      class="tweet unpublished"
-                     onclick="editTweet(this)"
-                     onmouseover="hoverPopup(event, this)"
-                     onmouseout="cleanPopup(event, this)"
                 >
                     <div class="tweet_text">{{ tweet.text }}</div>
                 </div>
@@ -42,14 +40,14 @@
                 <input type="submit" value="Save"/>
             </form>
             
-            <div id="inlineeditbox" hidden="true">
+            <div id="inlineeditbox">
                 <input id="inlineeditinput" name="newValue"/>
             </div>
         </div>
         
         <div id="tweetpopup" onclick="event.stopPropagation()">
             <a href="#" onclick="deleteTweet(event, this)" title="Delete Tweet">D</a>
-            <a href="#" onclick="insertTweet(event, this)" title="Insert new tweet below">I</a>
+            <a href="#" onclick="insertTweet(event, this)" title="Insert new tweet above">I</a>
             <a href="#" onclick="publishTweet(event, this)" title="Publish Tweet now">P</a>
         </div>
         

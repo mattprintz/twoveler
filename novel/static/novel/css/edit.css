@@ -125,7 +125,10 @@ form {
     background: #DDDDDD;
     padding-left: 3px;
     padding-right: 3px;
-    padding-top: auto;
-    padding-bottom: auto;
     height: inherit;
+}
+
+#inlineeditbox {
+    display: none;
+    font: 10pt/1.2 Courier, monospace;
 }

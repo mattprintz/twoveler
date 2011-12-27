@@ -75,10 +75,11 @@ def editinsert(request):
         pass
     reftweet = Tweet.objects.get(id=id)
     
-    newtweet = Tweet(text='new tweet', sort=(reftweet.sort + 1))
+    newtweet = Tweet(text='new tweet', sort=(reftweet.sort))
     
     Tweet.objects.insert(newtweet)
-    return HttpResponse("true")
+    return HttpResponse(newtweet.id)
+    #return HttpResponse("true")
 
 @login_required(login_url="/login/")
 def editpublish(request):

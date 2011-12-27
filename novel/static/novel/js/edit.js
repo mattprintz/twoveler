@@ -1,5 +1,22 @@
 // Javascript for edit page
 
+$(document).ready(function(evt) {
+    
+    // Scroll to bottom of tweet div
+    var tweets = $("#tweets");
+    tweets.scrollTop(tweets[0].scrollHeight);
+    
+    setWidths();
+    
+    $("#tweetpoup").hide();
+    
+    $(".unpublished").hover(hoverPopup, cleanPopup);
+    $(".unpublished").click(editTweet);
+    
+    $("#inlineeditinput").blur(submitInlineEdit);
+    $("#inlineeditinput").keypress(submitInlineEdit);
+});
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -45,251 +62,250 @@ function setWidths() {
     }
 }
 
-function onLoad(event) {
-   var tweetDiv = document.getElementById("tweets");
-   
-   tweetDiv.scrollTop = tweetDiv.scrollHeight;
-   
-   setWidths();
-}
-
 function submitInlineEdit(event) {
-    var inputBox = document.getElementById("inlineeditbox"),
-        input = document.getElementById("inlineeditinput");
+    var inputBox = $("#inlineeditbox"),
+        input = $("#inlineeditinput");
     
-    var tweetId = inputBox.getAttribute("tweetId");
+    var tweetId = inputBox.attr("tweetId");
     
-    var tweet = document.getElementById(tweetId),
-        tweetText = tweet.getElementsByClassName("tweet_text")[0],
+    var tweet = $("#"+tweetId),
+        tweetText = tweet.find(".tweet_text"),
         tweetNum = tweetId.replace(/^tweet/, "");
     
-    var newValue = input.value,
-        origValue = tweet.getAttribute("originalText");
-    
+    var newValue = input.val(),
+        origValue = tweet.attr("originalText");
     
     if (event.type == "keypress") {
         if (event.keyCode == 27) {
-            input.value = origValue;
-            input.blur();
+            input.val(origValue);
+            input[0].blur();
             return;
         }
         else if (event.keyCode != 13) {
             return;
         }
         else {
-            input.blur();
+            input[0].blur();
             return;
         }
     }
-    if(event.target != input) {
+    if(event.target != input[0]) {
         return;
     }
     
     if(newValue != origValue) {
         
-        var req = new XMLHttpRequest();
-        req.open("POST", "/edit/inline/");
-        
-        var datastring = encodeURIComponent("id") + "=" + encodeURIComponent(tweetNum) + "&" +
-                         encodeURIComponent("newcontent") + "=" + encodeURIComponent(input.value);
-        
-        req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        req.setRequestHeader("Content-length", datastring.length);
-        req.setRequestHeader("Connection", "close");
-        req.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-        
-        req.onload = function(evt) {
-            var result = JSON.parse(req.responseText);
-            if(result == true) {
-                tweetText.textContent = input.value;
-                tweet.setAttribute("originalText", input.value);
+        $.ajax({
+            url: "/edit/inline/",
+            type: "POST",
+            data: {
+                "id": tweetNum,
+                "newcontent": input.val()
+            },
+            headers: {
+                "X-CSRFToken": getCookie('csrftoken')
+            },
+            success: function(data, textStatus, xhr) {
+                var result = JSON.parse(data);
+                if(result == true) {
+                    tweetText.text(input.val());
+                    tweet.attr("originalText", input.val());
+                }
+                
+                inputBox.hide();
+                tweet.show();
+                input.val("");
+                inputBox.removeAttr("tweetId");
+            },
+            error: function(data, textStatus, xhr) {
+                inputBox.hide();
+                tweet.show();
+                input.val("");
+                inputBox.removeAttr("tweetId");
             }
-            
-            inputBox.hidden = true;
-            tweet.hidden = false;
-            input.value = "";
-            inputBox.removeAttribute("tweetId");
-        }
-        
-        req.onerror = function(evt) {
-            inputBox.hidden = true;
-            tweet.hidden = false;
-            input.value = "";
-            inputBox.removeAttribute("tweetId");
-        }
-        
-        req.send(datastring);
+        });
         
     }
     else {
-        inputBox.hidden = true;
-        tweet.hidden = false;
-        input.value = "";
-        inputBox.removeAttribute("tweetId");
+        inputBox.hide();
+        tweet.show();
+        input.val("");
+        inputBox.removeAttr("tweetId");
     }
     
 }
 
-function editTweet(elem) {
-    var inputBox = document.getElementById("inlineeditbox"),
-        input = document.getElementById("inlineeditinput");
-    elem.parentNode.insertBefore(inputBox, elem);
-    elem.hidden = true;
-    inputBox.hidden = false;
+function editTweet(evt) {
+    var elem = $(this);
     
-    var tweetId = elem.getAttribute("id");
-    inputBox.setAttribute("tweetId", tweetId);
+    var inputBox = $("#inlineeditbox"),
+        input = $("#inlineeditinput");
     
-    input.value = elem.getAttribute("originalText");
+    elem.before(inputBox);
+    elem.hide();
+    inputBox.show();
     
-    input.focus();
-    input.select();
-    input.addEventListener("blur", submitInlineEdit, false);
-    input.addEventListener("keypress", submitInlineEdit, false);
+    var tweetId = elem.attr("id");
+    inputBox.attr("tweetId", tweetId);
+    
+    input.val(elem.attr("originalText"));
+    
+    input[0].focus();
+    input[0].select();
 }
 
-function hoverPopup(evt, elem) {
-    var popup = document.getElementById("tweetpopup");
-    elem.appendChild(popup);
-    popup.style.height = elem.clientHeight;
-    popup.style.right = document.body.clientWidth - (elem.offsetLeft + elem.offsetWidth);
-    popup.style.display = "inline";
-    popup.setAttribute("tweetId", elem.id);
+function hoverPopup(evt) {
+    var elem = $(this)[0];
+    var popup = $("#tweetpopup");
+    popup.height($(this).height());
+    var position = $(this).offset();
+    var right = $("body")[0].clientWidth - (elem.offsetWidth + position.left);
+    popup.css('top', position.top);
+    popup.css('right', right + "px");
+    popup.show();
+    
+    popup.attr("tweetId", elem.id);
 }
 
-function cleanPopup(evt, elem) {
-    
-    var popup = document.getElementById("tweetpopup");
+function cleanPopup(evt) {
+    var elem = $(this)[0];
+    var popup = $("#tweetpopup");
     var related = evt.relatedTarget;
     if(!related) {
         return;
     }
-    var relationship = related.compareDocumentPosition(elem) & elem.DOCUMENT_POSITION_CONTAINS;
-    if (relationship == 8 || related == elem) {
+    var relationship = related.compareDocumentPosition(popup[0]) & elem.DOCUMENT_POSITION_CONTAINS;
+    if (relationship == 8 || related == popup[0]) {
         return;
     }
-    popup.style.display = "none";
-    popup.removeAttribute("tweetId");
-    document.body.appendChild(popup);
+    
+    popup.hide();
+    
+    popup.removeAttr("tweetId");
 }
 
 function deleteTweet(evt, elem) {
-    var popup = document.getElementById("tweetpopup");
-    var tweetId = popup.getAttribute("tweetId"),
-        tweet = document.getElementById(tweetId),
-        tweetText = tweet.getElementsByClassName("tweet_text")[0].textContent,
+    var popup = $("#tweetpopup"),
+        tweetId = popup.attr("tweetId"),
+        tweet = $("#"+tweetId),
+        tweetText = tweet.find(".tweet_text"),
         tweetNum = tweetId.replace(/^tweet/, "");
+    
     if(!window.confirm("Are you sure you want to delete this tweet?\n\n" +
-                      tweetText.substr(0,40) + (tweetText.length > 40 ? "..." : ""))) {
+                      tweetText.text().substr(0,40) + (tweetText.text().length > 40 ? "..." : ""))) {
         return;
     }
     
-    var req = new XMLHttpRequest();
-    req.open("POST", "/edit/delete/");
-    
-    var datastring = encodeURIComponent("id") + "=" + encodeURIComponent(tweetNum) + "&" +
-                     encodeURIComponent("textvalue") + "=" + encodeURIComponent(tweetText);
-    
-    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    req.setRequestHeader("Content-length", datastring.length);
-    req.setRequestHeader("Connection", "close");
-    req.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-    
-    req.onload = function(evt) {
-        var result = JSON.parse(req.responseText);
-        if(result == true) {
-            document.location.reload();
+    $.ajax({
+        url: "/edit/delete/",
+        type: "POST",
+        data: {
+            "id": tweetNum,
+            "textvalue": tweetText.text()
+        },
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')
+        },
+        success: function(data, textStatus, xhr) {
+            var result = JSON.parse(data);
+            if(result == true) {
+                tweet.hide("fast", function() {
+                    $(this).remove();
+                });
+            }
+            else {
+                //TODO: Add Error catching/display here
+            }
+        },
+        error: function(data, textStatus, xhr) {
+            //TODO: Add Error catching/display here
         }
-        else {
-            //TODO: Add error catching here
-        }
-        
-    }
-    
-    
-    req.onerror = function(evt) {
-        //TODO: Add error catching here
-    }
-    
-    req.send(datastring);
+    });
     
 }
 
 function insertTweet(evt, elem) {
-    var popup = document.getElementById("tweetpopup");
-    var tweetId = popup.getAttribute("tweetId"),
-        tweet = document.getElementById(tweetId),
+    var popup = $("#tweetpopup"),
+        tweetId = popup.attr("tweetId"),
+        tweet = $("#"+tweetId),
         tweetNum = tweetId.replace(/^tweet/, "");
     
-    var req = new XMLHttpRequest();
-    req.open("POST", "/edit/insert/");
-    
-    var datastring = encodeURIComponent("id") + "=" + encodeURIComponent(tweetNum);
-    
-    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    req.setRequestHeader("Content-length", datastring.length);
-    req.setRequestHeader("Connection", "close");
-    req.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-    
-    req.onload = function(evt) {
-        var result = JSON.parse(req.responseText);
-        if(result == true) {
-            document.location.reload();
+    $.ajax({
+        url: "/edit/insert/",
+        type: "POST",
+        data: {
+            "id": tweetNum
+        },
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')
+        },
+        success: function(data, textStatus, xhr) {
+            var result = JSON.parse(data);
+            if(typeof result == "number") {
+                var newTweet = tweet.clone(true),
+                    newText = newTweet.find(".tweet_text");
+                newTweet.attr("id", "tweet" + result);
+                newTweet.attr("originalText", "new tweet");
+                newText.text("new tweet");
+                
+                newTweet.hide();
+                tweet.before(newTweet);
+                newTweet.show("fast", function() {
+                    $(this)[0].click();
+                })
+                
+            }
+            else if(result == true) {
+                document.location.reload();
+            }
+            else {
+                //TODO: Add Error catching/display here
+            }
+        },
+        error: function(data, textStatus, xhr) {
+            //TODO: Add Error catching/display here
         }
-        else {
-            //TODO: Add error catching here
-        }
-        
-    }
-    
-    
-    req.onerror = function(evt) {
-        //TODO: Add error catching here
-    }
-    
-    req.send(datastring);
+    });
     
 }
 
 function publishTweet(evt, elem) {
-    var popup = document.getElementById("tweetpopup");
-    var tweetId = popup.getAttribute("tweetId"),
-        tweet = document.getElementById(tweetId),
-        tweetText = tweet.getElementsByClassName("tweet_text")[0].textContent,
+    var popup = $("#tweetpopup"),
+        tweetId = popup.attr("tweetId"),
+        tweet = $("#"+tweetId),
+        tweetText = tweet.find(".tweet_text"),
         tweetNum = tweetId.replace(/^tweet/, "");
+    
     if(!window.confirm("Are you sure you want to publish this tweet immediately?\n\n" +
-                      tweetText.substr(0,40) + (tweetText.length > 40 ? "..." : ""))) {
+                      tweetText.text().substr(0,40) + (tweetText.text().length > 40 ? "..." : ""))) {
         return;
     }
     
-    var req = new XMLHttpRequest();
-    req.open("POST", "/edit/publish/");
-    
-    var datastring = encodeURIComponent("id") + "=" + encodeURIComponent(tweetNum) + "&" +
-                     encodeURIComponent("textvalue") + "=" + encodeURIComponent(tweetText);
-    
-    req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    req.setRequestHeader("Content-length", datastring.length);
-    req.setRequestHeader("Connection", "close");
-    req.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
-    
-    req.onload = function(evt) {
-        var result = JSON.parse(req.responseText);
-        if(result == true) {
-            document.location.reload();
+    $.ajax({
+        url: "/edit/publish/",
+        type: "POST",
+        data: {
+            "id": tweetNum,
+            "textvalue": tweetText.text()
+        },
+        headers: {
+            "X-CSRFToken": getCookie('csrftoken')
+        },
+        success: function(data, textStatus, xhr) {
+            var result = JSON.parse(data);
+            if(result == true) {
+                tweet.toggleClass("unpublished published");
+                tweetText.toggleClass("tweet_text publishedtext");
+                tweet.off("hover click");
+            }
+            else {
+                //TODO: Add Error catching/display here
+            }
+        },
+        error: function(data, textStatus, xhr) {
+            //TODO: Add Error catching/display here
         }
-        else {
-            //TODO: Add error catching here
-        }
-        
-    }
-    
-    
-    req.onerror = function(evt) {
-        //TODO: Add error catching here
-    }
-    
-    req.send(datastring);
+    });
 }
 
 
