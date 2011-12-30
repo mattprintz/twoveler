@@ -3,6 +3,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
 from django.contrib.auth.urls import urlpatterns as authpatterns
+from novel.feeds import TweetFeed
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -11,6 +12,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'novel.views.home', name='home'),
+    
+    url(r'^feed/$', TweetFeed()),
     
     url(r'^edit/$', 'novel.views.edit'),
     url(r'^edit/submit/$', 'novel.views.editsubmit'),

@@ -4,6 +4,7 @@
         <link href="{{ STATIC_URL }}novel/css/home.css" rel="stylesheet" type="text/css" />
         <script type="text/javascript" src="{{ STATIC_URL }}novel/js/home.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.js"></script>
+        {% block header %}{% endblock %}
 	</head>
 	<body background="{{ MEDIA_URL }}background.jpg" onload="onLoad({% if page == lastpage%}true{%else%}false{%endif%})">
 		<div class="title">

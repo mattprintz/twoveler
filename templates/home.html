@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
+{% block header %}
+	<link rel="alternate" title="Twovel RSS" href="/feed/" type="application/rss+xml">
+{% endblock%}
+
 {% block content %}
 		{% if lines %}
 			<ul>
 			{% for line in lines %}
 				<li id="tweet{{line.id}}">
-				{% if forloop.last and page == lastpage %}
-					<b>{{ line.text }}</b>
+				{% if highlight %}
+					{% if highlight == line.id %}
+						<b>{{ line.text }}</b>
+					{% else %}
+						{{ line.text }}
+					{% endif%}
 				{% else %}
-					{{ line.text }}
+					{% if  forloop.last and page == lastpage %}
+						<b>{{ line.text }}</b>
+					{% else %}
+						{{ line.text }}
+					{% endif%}
 				{% endif %}
 				</li>
 			{% endfor %}

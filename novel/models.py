@@ -53,6 +53,11 @@ class TweetManager(models.Manager):
         start = (int(page_num) - 1) * PAGEHEIGHT
         return Tweet.objects.published()[start:start+PAGEHEIGHT]
     
+    def getPage(self, tweet):
+        pos = list(self.published()).index(tweet)
+        page = (pos / PAGEHEIGHT) + 1
+        return page
+    
     def resort(self):
         count = 1
         tweets = Tweet.objects.all()

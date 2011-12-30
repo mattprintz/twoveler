@@ -10,6 +10,10 @@ def home(request):
         page = int(request.GET['page'])
     except (KeyError, ValueError):
         page = Tweet.objects.lastpage()
+    try:
+        id = int(request.GET['id'])
+    except (KeyError, ValueError):
+        id = None
     if page < 0:
         return HttpResponseRedirect('/?page=1')
     lastPage = Tweet.objects.lastpage()
@@ -22,6 +26,7 @@ def home(request):
             'lastpage': lastPage,
             'lines': Tweet.objects.page(page),
             'title': settings.TITLE,
+            'highlight': id,
         })
     return HttpResponse(t.render(c))
 
