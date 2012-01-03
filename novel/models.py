@@ -74,6 +74,15 @@ class TweetManager(models.Manager):
             tweet.sort = count
             count += 1
             tweet.save()
+    
+    def years(self):
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute("""SELECT published_time FROM novel_tweet
+                       WHERE published ORDER BY published_time asc""")
+        results = cursor.fetchall()
+        return (results[0][0].year, results[-1][0].year)
+        
 
 class Tweet(models.Model):
     

@@ -1,3 +1,5 @@
+{% load twitter %}
+{% load noveltags %}
 <html>
 	<head>
 		<title>{% block title %}{{ title }} - A Twitter Novel{% endblock %}</title>
@@ -17,6 +19,9 @@
 		</div>
 		<div class="footer">
             {% block footer %}{% endblock %}
+			<div class="Links">
+				<a href="/feed/"><img src="{{ STATIC_URL }}/novel/img/feed-icon-28x28.png" alt="RSS Feed"></a>
+				{% twitter_button %} {% copyright %}
         </div>
     </body>
 </html>
