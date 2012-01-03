@@ -8,4 +8,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         tweet = Tweet.objects.getNextToPublish()
-        tweet.publish()
+        if tweet:
+            tweet.publish()

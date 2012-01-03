@@ -44,8 +44,10 @@ class TweetManager(models.Manager):
         scheduled = self.unpublished().filter(scheduled_time__isnull=False).order_by('scheduled_time')
         if scheduled.count() > 0:
             return scheduled[0]
-        else:
+        elif self.unpublished().count() > 0:
             return self.unpublished()[0]
+        else:
+            return None
     
     def lastpage(self):
         count = Tweet.objects.published().count()
