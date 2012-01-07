@@ -2,9 +2,10 @@
 
 body {
     background-color: #DFDFFF;
-    
-    /*font-size: 10pt;*/
-    /*font-family: Courier, "Lucida Console", monospace;*/
+    font: 10pt/1.2 Courier, monospace;
+}
+
+textarea, input {
     font: 10pt/1.2 Courier, monospace;
 }
 

@@ -157,6 +157,7 @@ function editTweet(evt) {
 function hoverPopup(evt) {
     var elem = $(this)[0];
     var popup = $("#tweetpopup");
+    $(this).append(popup);
     popup.height($(this).height());
     var position = $(this).offset();
     var right = $("body")[0].clientWidth - (elem.offsetWidth + position.left);
